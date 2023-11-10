@@ -16,4 +16,6 @@ public interface IIngredienteService {
    
    public void editIngrediente(Long id, Ingrediente i);
    
+   public List<Ingrediente> getIngredientesByPlato(String plato);
+   
 }

@@ -22,7 +22,7 @@ public class IngredienteController {
    
    @GetMapping
    public String inicio(){
-      return "Microservicio de Ingredienteeeees 🧂";
+      return "Microservicio de Ingredienteeeees 🧂!!!!!!!!!!!";
    }
    
    @GetMapping("/traer")
@@ -30,7 +30,7 @@ public class IngredienteController {
       return ingredienteService.getIngredientes();
    }
    
-   @GetMapping("/traer/{id}")
+   @GetMapping("/buscar/{id}")
    public Ingrediente traerIngredienteById(@PathVariable Long id){
       return ingredienteService.findIngrediente(id);
    }
@@ -53,4 +53,9 @@ public class IngredienteController {
       ingredienteService.editIngrediente(i.getId(), i);
       return "Se editó el ingrediente " + i.getNombre() + " correctamente";
    }
+   
+   @GetMapping ("/traer/{plato}")
+   public List<Ingrediente> traerIngredientesByPlato (@PathVariable String plato) {
+      return ingredienteService.getIngredientesByPlato(plato);
+    }
 }

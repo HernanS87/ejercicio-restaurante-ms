@@ -42,6 +42,10 @@ public class IngredienteService implements IIngredienteService{
       
       ingredienteRepository.save(ingrediente);
    }
-   
+
+   @Override
+   public List<Ingrediente> getIngredientesByPlato(String plato) {
+      return ingredienteRepository.findByPlato(plato);
+   }
    
 }
