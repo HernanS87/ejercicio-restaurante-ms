@@ -1,16 +1,25 @@
 package com.todocode.platos.service;
 
+import com.todocode.platos.dto.IngredienteDTO;
 import com.todocode.platos.entity.Plato;
 import com.todocode.platos.repository.IPlatoRepository;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class PlatoService implements IPlatoService{
    
    @Autowired
    IPlatoRepository platoRepository;
+   @Autowired
+   RestTemplate consumirAPI;
+   
+   //Esta es otra forma de implementar RestTemplate sin necesidad de crear la clase AppConfig
+   //RestTemplate api = new RestTemplate();
 
    @Override
    public List<Plato> getPlatos() {
@@ -19,7 +28,18 @@ public class PlatoService implements IPlatoService{
 
    @Override
    public void savePlato(Plato p) {
-      platoRepository.save(p); // con este método no podrá guardar la lista de ingredientes aún
+      
+      List<String> listIngByPlato = new ArrayList<>();
+      String url = "http://localhost:9010/ingrediente/traer/" + p.getNombre() ;
+      
+      List<IngredienteDTO> ingredientes = Arrays.asList(consumirAPI.getForObject(url, IngredienteDTO[].class));
+      
+      for(IngredienteDTO i : ingredientes){
+         listIngByPlato.add(i.getNombre());
+      }
+      
+      p.setListaIngredientes(listIngByPlato);
+      platoRepository.save(p); 
    }
 
    @Override
